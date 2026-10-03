@@ -1,12 +1,51 @@
-import EmployeeCard from './components/EmployeeCard';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
+
+import Dashboard from './pages/Dashboard';
+import Employees from './pages/Employees';
+import AddEmployee from './pages/AddEmployee';
+
 function App() {
     return (
-        <div>
-            <h1>Employee Management System</h1>
-            <EmployeeCard />
-            <EmployeeCard />
-            <EmployeeCard />
-        </div>
+        <BrowserRouter>
+
+            <div className="min-h-screen bg-gray-100">
+
+                <Sidebar />
+
+                <div className="ml-64">
+
+                    <Navbar />
+
+                    <main>
+
+                        <Routes>
+
+                            <Route
+                                path="/"
+                                element={<Dashboard />}
+                            />
+
+                            <Route
+                                path="/employees"
+                                element={<Employees />}
+                            />
+                            <Route
+                                path="/employees/create"
+                                element={<AddEmployee />}
+                            />
+
+                        </Routes>
+
+                    </main>
+
+                </div>
+
+            </div>
+
+        </BrowserRouter>
     );
 }
 
