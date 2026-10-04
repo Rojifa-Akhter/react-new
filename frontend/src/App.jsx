@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import AddEmployee from './pages/AddEmployee';
+import EditEmployee from './pages/EditEmployee';
 
 function App() {
     return (
@@ -35,6 +36,10 @@ function App() {
                             <Route
                                 path="/employees/create"
                                 element={<AddEmployee />}
+                            />
+                            <Route
+                                path="/employees/:id/edit"
+                                element={<EditEmployee />}
                             />
 
                         </Routes>
