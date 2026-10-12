@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreDepartmentRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class StoreDepartmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +24,23 @@ class StoreDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:departments,name',
+            ],
+            'code' => [
+                'required',
+                'string',
+                'max:50',
+                'unique:departments,code',
+            ],
+            'description' => ['nullable', 'string'],
+            'status' => [
+                'required',
+                Rule::in(['Active', 'Inactive']),
+            ],
         ];
     }
 }

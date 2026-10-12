@@ -1,4 +1,5 @@
 import StatCard from '../components/StatCard';
+import AttendancePunchCard from '../components/AttendancePunchCard';
 
 function Dashboard() {
     return (
@@ -44,6 +45,10 @@ function Dashboard() {
                 />
 
             </div>
+            {/* Attendance Check-in / Check-out */}
+<div className="mt-8">
+    <AttendancePunchCard />
+</div>
 
 
             {/* Recent Employees */}

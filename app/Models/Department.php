@@ -16,7 +16,5 @@ class Department extends Model
         'status',
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
+
 }

@@ -7,6 +7,15 @@ import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import AddEmployee from './pages/AddEmployee';
 import EditEmployee from './pages/EditEmployee';
+import Departments from './pages/Departments';
+import AddDepartment from './pages/AddDepartment';
+import EditDepartment from './pages/EditDepartment';
+import Designations from './pages/Designations';
+import AddDesignation from './pages/AddDesignation';
+import EditDesignation from './pages/EditDesignation';
+import Attendances from './pages/Attendances';
+import AddAttendance from './pages/AddAttendance';
+import EditAttendance from './pages/EditAttendance';
 
 function App() {
     return (
@@ -41,6 +50,15 @@ function App() {
                                 path="/employees/:id/edit"
                                 element={<EditEmployee />}
                             />
+                            <Route path="/departments" element={<Departments />} />
+                            <Route path="/departments/create" element={<AddDepartment />} />
+                            <Route path="/departments/:id/edit" element={<EditDepartment />} />
+                            <Route path="/designations" element={<Designations />} />
+                            <Route path="/designations/create" element={<AddDesignation />} />
+                            <Route path="/designations/:id/edit" element={<EditDesignation />} />
+                            <Route path="/attendance" element={<Attendances />} />
+                            <Route path="/attendance/create" element={<AddAttendance />} />
+                            <Route path="/attendance/:id/edit" element={<EditAttendance />} />
 
                         </Routes>
 

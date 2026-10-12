@@ -44,6 +44,13 @@ function Sidebar() {
                     <span>🏢</span>
                     Departments
                 </Link>
+                <Link
+                    to="/designations"
+                    className="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-gray-300 hover:bg-gray-800"
+                >
+                    <span>🏷️</span>
+                    Designations
+                </Link>
 
 
                 <Link

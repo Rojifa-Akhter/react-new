@@ -7,7 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class DepartmentService
 {
-    public function getAll(
+public function getAll(
         ?string $search = null,
         int $perPage = 10
     ): LengthAwarePaginator {
@@ -15,21 +15,22 @@ class DepartmentService
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
-                        ->orWhere('code', 'like', "%{$search}%");
+                        ->orWhere('code', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
                 });
             })
             ->latest()
             ->paginate($perPage);
     }
 
-    public function find(int $id): Department
-    {
-        return Department::findOrFail($id);
-    }
-
     public function create(array $data): Department
     {
         return Department::create($data);
+    }
+
+    public function find(Department $department): Department
+    {
+        return $department;
     }
 
     public function update(
@@ -43,6 +44,6 @@ class DepartmentService
 
     public function delete(Department $department): bool
     {
-        return $department->delete();
+        return (bool) $department->delete();
     }
 }
