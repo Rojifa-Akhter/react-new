@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -40,3 +41,5 @@ Route::get('attendance/employees', [AttendanceController::class, 'employees']);
 
 Route::apiResource('attendance', AttendanceController::class)
     ->parameters(['attendance' => 'attendance']);
+Route::get('dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth:sanctum');

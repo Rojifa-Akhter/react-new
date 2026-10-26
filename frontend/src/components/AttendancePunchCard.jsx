@@ -7,8 +7,16 @@ export default function AttendancePunchCard() {
     const [processing, setProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [hidden, setHidden] = useState(false);
 
     const fetchTodayAttendance = useCallback(async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setHidden(true);
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         setErrorMessage('');
 
@@ -16,10 +24,16 @@ export default function AttendancePunchCard() {
             const response = await api.get('/attendance/today');
             setAttendance(response.data.data ?? null);
         } catch (error) {
-            setErrorMessage(
-                error.response?.data?.message ??
-                'Could not load today attendance.'
-            );
+            const status = error.response?.status;
+            // Hide card if user is not authenticated or no employee profile
+            if (status === 401 || status === 404) {
+                setHidden(true);
+            } else {
+                setErrorMessage(
+                    error.response?.data?.message ??
+                    'Could not load today attendance.'
+                );
+            }
         } finally {
             setLoading(false);
         }
@@ -67,6 +81,8 @@ export default function AttendancePunchCard() {
 
     const checkedIn = Boolean(attendance?.check_in);
     const checkedOut = Boolean(attendance?.check_out);
+
+    if (hidden) return null;
 
     return (
         <div className="mx-auto max-w-2xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">

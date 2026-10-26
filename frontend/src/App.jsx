@@ -16,60 +16,56 @@ import EditDesignation from './pages/EditDesignation';
 import Attendances from './pages/Attendances';
 import AddAttendance from './pages/AddAttendance';
 import EditAttendance from './pages/EditAttendance';
+import Login from './pages/Login';
+
 
 function App() {
     return (
         <BrowserRouter>
+            <Routes>
+                {/* Login page: no Sidebar or Navbar */}
+                <Route path="/login" element={<Login />} />
 
-            <div className="min-h-screen bg-gray-100">
+                {/* Other pages: Sidebar and Navbar included */}
+                <Route
+                    path="*"
+                    element={
+                        <div className="min-h-screen bg-gray-100">
+                            <Sidebar />
 
-                <Sidebar />
+                            <div className="ml-64">
+                                <Navbar />
 
-                <div className="ml-64">
+                                <main>
+                                    <Routes>
+                                        <Route path="/" element={<Dashboard />} />
 
-                    <Navbar />
+                                        <Route path="/employees" element={<Employees />} />
+                                        <Route path="/employees/create" element={<AddEmployee />} />
+                                        <Route path="/employees/:id/edit" element={<EditEmployee />} />
 
-                    <main>
+                                        <Route path="/departments" element={<Departments />} />
+                                        <Route path="/departments/create" element={<AddDepartment />} />
+                                        <Route path="/departments/:id/edit" element={<EditDepartment />} />
 
-                        <Routes>
+                                        <Route path="/designations" element={<Designations />} />
+                                        <Route path="/designations/create" element={<AddDesignation />} />
+                                        <Route path="/designations/:id/edit" element={<EditDesignation />} />
 
-                            <Route
-                                path="/"
-                                element={<Dashboard />}
-                            />
-
-                            <Route
-                                path="/employees"
-                                element={<Employees />}
-                            />
-                            <Route
-                                path="/employees/create"
-                                element={<AddEmployee />}
-                            />
-                            <Route
-                                path="/employees/:id/edit"
-                                element={<EditEmployee />}
-                            />
-                            <Route path="/departments" element={<Departments />} />
-                            <Route path="/departments/create" element={<AddDepartment />} />
-                            <Route path="/departments/:id/edit" element={<EditDepartment />} />
-                            <Route path="/designations" element={<Designations />} />
-                            <Route path="/designations/create" element={<AddDesignation />} />
-                            <Route path="/designations/:id/edit" element={<EditDesignation />} />
-                            <Route path="/attendance" element={<Attendances />} />
-                            <Route path="/attendance/create" element={<AddAttendance />} />
-                            <Route path="/attendance/:id/edit" element={<EditAttendance />} />
-
-                        </Routes>
-
-                    </main>
-
-                </div>
-
-            </div>
-
+                                        <Route path="/attendance" element={<Attendances />} />
+                                        <Route path="/attendance/create" element={<AddAttendance />} />
+                                        <Route path="/attendance/:id/edit" element={<EditAttendance />} />
+                                    </Routes>
+                                </main>
+                            </div>
+                        </div>
+                    }
+                />
+            </Routes>
         </BrowserRouter>
     );
 }
 
 export default App;
+
+

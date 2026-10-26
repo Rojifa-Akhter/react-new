@@ -1,7 +1,45 @@
+import { useNavigate } from 'react-router-dom';
 import StatCard from '../components/StatCard';
 import AttendancePunchCard from '../components/AttendancePunchCard';
+import { useEffect, useState } from 'react';
+import api from '../api';
 
 function Dashboard() {
+    const navigate = useNavigate();
+    const [stats, setStats] = useState({
+        total_employees: 0,
+        departments: 0,
+        present_today: 0,
+        on_leave: 0,
+    });
+    const [recentEmployees, setRecentEmployees] = useState([]);
+
+
+    useEffect(() => {
+        const fetchDashboardStats = async () => {
+            try {
+                const response = await api.get('/dashboard');
+                setStats(response.data.data);
+            } catch (error) {
+                console.error('Failed to load dashboard stats:', error);
+            }
+        };
+
+        const fetchRecentEmployees = async () => {
+            try {
+                const response = await api.get('/employees?per_page=5');
+                const result = response.data.data;
+
+                setRecentEmployees(result.data ?? result);
+            } catch (error) {
+                console.error('Failed to load recent employees:', error);
+            }
+        };
+
+        fetchDashboardStats();
+        fetchRecentEmployees();
+    }, []);
+
     return (
         <div className="p-8">
 
@@ -22,33 +60,32 @@ function Dashboard() {
 
                 <StatCard
                     title="Total Employees"
-                    value="25"
+                    value={stats.total_employees}
                     icon="👥"
                 />
 
                 <StatCard
                     title="Departments"
-                    value="6"
+                    value={stats.departments}
                     icon="🏢"
                 />
 
                 <StatCard
                     title="Present Today"
-                    value="21"
+                    value={stats.present_today}
                     icon="🟢"
                 />
 
                 <StatCard
                     title="On Leave"
-                    value="4"
+                    value={stats.on_leave}
                     icon="🔴"
                 />
-
             </div>
             {/* Attendance Check-in / Check-out */}
-<div className="mt-8">
-    <AttendancePunchCard />
-</div>
+            <div className="mt-8">
+                <AttendancePunchCard />
+            </div>
 
 
             {/* Recent Employees */}
@@ -66,7 +103,10 @@ function Dashboard() {
                         </p>
                     </div>
 
-                    <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                    <button
+                        onClick={() => navigate('/employees')}
+                        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                    >
                         + Add Employee
                     </button>
 
@@ -105,90 +145,51 @@ function Dashboard() {
                         </thead>
 
 
+
                         <tbody className="divide-y divide-gray-100">
+                            {recentEmployees.map((employee) => (
+                                <tr key={employee.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600">
+                                                {employee.name?.charAt(0).toUpperCase()}
+                                            </div>
 
-                            <tr className="hover:bg-gray-50">
-
-                                <td className="px-6 py-4">
-
-                                    <div className="flex items-center gap-3">
-
-                                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600">
-                                            RA
+                                            <span className="text-sm font-medium text-gray-900">
+                                                {employee.name}
+                                            </span>
                                         </div>
+                                    </td>
 
-                                        <span className="text-sm font-medium text-gray-900">
-                                            Rojifa Akhter
+                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                        {employee.email}
+                                    </td>
+
+                                    <td className="px-6 py-4 text-sm text-gray-600">
+                                        {employee.designation || '—'}
+                                    </td>
+
+                                    <td className="px-6 py-4 text-sm text-gray-600">
+                                        {employee.department || '—'}
+                                    </td>
+
+                                    <td className="px-6 py-4">
+                                        <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                            {employee.status}
                                         </span>
+                                    </td>
+                                </tr>
+                            ))}
 
-                                    </div>
-
-                                </td>
-
-                                <td className="px-6 py-4 text-sm text-gray-500">
-                                    rojifa@gmail.com
-                                </td>
-
-                                <td className="px-6 py-4 text-sm text-gray-600">
-                                    Laravel Developer
-                                </td>
-
-                                <td className="px-6 py-4 text-sm text-gray-600">
-                                    Development
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                                        Active
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr className="hover:bg-gray-50">
-
-                                <td className="px-6 py-4">
-
-                                    <div className="flex items-center gap-3">
-
-                                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-100 text-xs font-bold text-purple-600">
-                                            RA
-                                        </div>
-
-                                        <span className="text-sm font-medium text-gray-900">
-                                            Rahim Ahmed
-                                        </span>
-
-                                    </div>
-
-                                </td>
-
-                                <td className="px-6 py-4 text-sm text-gray-500">
-                                    rahim@gmail.com
-                                </td>
-
-                                <td className="px-6 py-4 text-sm text-gray-600">
-                                    PHP Developer
-                                </td>
-
-                                <td className="px-6 py-4 text-sm text-gray-600">
-                                    Development
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                                        Active
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
+                            {recentEmployees.length === 0 && (
+                                <tr>
+                                    <td colSpan="5" className="px-6 py-6 text-center text-gray-500">
+                                        No employees found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
+
 
                     </table>
 

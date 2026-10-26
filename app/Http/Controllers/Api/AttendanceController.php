@@ -93,7 +93,9 @@ class AttendanceController extends Controller
 
         abort_unless($user, 401, 'Unauthenticated.');
 
-        $employee = Employee::where('email', $user->email)->first();
+        // Try user_id relationship first, then fallback to email matching
+        $employee = Employee::where('user_id', $user->id)->first()
+            ?? Employee::where('email', $user->email)->first();
 
         abort_unless(
             $employee && !$employee->trashed(),
