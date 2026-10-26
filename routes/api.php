@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\LeaveRequestController;
+use App\Http\Controllers\Api\PayrollController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -45,6 +46,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch(
         'leave-requests/{leaveRequest}/review',
         [LeaveRequestController::class, 'review']
+    );
+    Route::apiResource('payrolls', PayrollController::class)
+        ->except(['update']);
+
+    Route::patch(
+        'payrolls/{payroll}/status',
+        [PayrollController::class, 'updateStatus']
+    );
+    Route::get(
+        'employees/{employee}/profile',
+        [EmployeeController::class, 'profile']
     );
 });
 Route::apiResource('employees', EmployeeController::class);

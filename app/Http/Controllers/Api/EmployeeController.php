@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeProfileRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Services\EmployeeService;
@@ -14,6 +15,28 @@ class EmployeeController extends Controller
     public function __construct(
         protected EmployeeService $employeeService
     ) {}
+    public function profile(Request $request, Employee $employee)
+    {
+        $user = $request->user();
+
+        if ($user && !in_array($user->role, ['Admin', 'HR'], true)) {
+            abort(403, 'Only Admin or HR can view employee profiles.');
+        }
+
+        $employee->load([
+            'user',
+            'department',
+            'designation',
+            'payrolls' => function ($query) {
+                $query->orderByDesc('salary_month');
+            },
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $employee,
+        ]);
+    }
 
     public function index()
     {
@@ -52,18 +75,15 @@ class EmployeeController extends Controller
     }
 
     public function update(
-        UpdateEmployeeRequest $request,
+        UpdateEmployeeProfileRequest $request,
         Employee $employee
     ) {
-        $employee = $this->employeeService->update(
-            $employee,
-            $request->validated()
-        );
+        $employee->update($request->validated());
 
         return response()->json([
             'success' => true,
-            'message' => 'Employee updated successfully.',
-            'data' => $employee,
+            'message' => 'Employee profile updated successfully.',
+            'data' => $employee->fresh(),
         ]);
     }
 

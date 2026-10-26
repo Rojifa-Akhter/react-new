@@ -18,7 +18,9 @@ import AddAttendance from './pages/AddAttendance';
 import EditAttendance from './pages/EditAttendance';
 import Login from './pages/Login';
 import LeaveRequests from './pages/LeaveRequests';
-
+import Payroll from "./pages/Payroll";
+import EmployeeProfile from "./pages/EmployeeProfile";
+import EditEmployeeProfile from "./pages/EditEmployeeProfile";
 
 function App() {
     return (
@@ -58,6 +60,15 @@ function App() {
                                         <Route path="/attendance/:id/edit" element={<EditAttendance />} />
 
                                         <Route path="/leave-requests" element={<LeaveRequests />} />
+                                        <Route path="/payroll" element={<Payroll />} />
+                                        <Route
+                                            path="/employees/:id/profile"
+                                            element={<EmployeeProfile />}
+                                        />
+                                        <Route
+                                            path="/employees/:id/profile/edit"
+                                            element={<EditEmployeeProfile />}
+                                        />
                                     </Routes>
                                 </main>
                             </div>

@@ -198,6 +198,12 @@ function Employees() {
                                             >
                                                 Delete
                                             </button>
+                                            <Link
+                                                to={`/employees/${employee.id}/profile`}
+                                                className="rounded-lg bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100"
+                                            >
+                                                View Profile
+                                            </Link>
                                         </td>
 
                                     </tr>
