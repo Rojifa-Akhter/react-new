@@ -23,6 +23,8 @@ export default function Login() {
             });
 
             const token = response.data.token;
+            console.log("Login response:", response.data);
+console.log("Token received:", Boolean(response.data.token));
 
             if (!token) {
                 setError("Login token server theke asheni.");

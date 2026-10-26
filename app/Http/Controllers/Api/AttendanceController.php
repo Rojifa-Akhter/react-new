@@ -141,4 +141,24 @@ class AttendanceController extends Controller
             'data' => $attendance,
         ]);
     }
+    public function summary(Request $request)
+    {
+        $date = $request->query('date', now()->toDateString());
+
+        $counts = Attendance::query()
+            ->whereDate('attendance_date', $date)
+            ->selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'present' => (int) ($counts['Present'] ?? 0),
+                'late' => (int) ($counts['Late'] ?? 0),
+                'absent' => (int) ($counts['Absent'] ?? 0),
+                'on_leave' => (int) ($counts['Leave'] ?? 0),
+            ],
+        ]);
+    }
 }

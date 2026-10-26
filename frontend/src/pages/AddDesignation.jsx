@@ -35,7 +35,7 @@ export default function AddDesignation() {
     };
 
     return (
-        <div>
+        <div className="p-8">
             {errorMessage && (
                 <div className="mx-auto mb-4 max-w-3xl rounded-lg bg-red-50 p-3 text-sm text-red-700">
                     {errorMessage}

@@ -12,11 +12,25 @@ export default function Attendances() {
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
 
+    const [summary, setSummary] = useState({
+        present: 0,
+        late: 0,
+        absent: 0,
+        on_leave: 0,
+    });
+
     const fetchAttendances = useCallback(async () => {
         setLoading(true);
         setErrorMessage('');
 
         try {
+            const summaryResponse = await api.get('/attendance/summary', {
+                params: {
+                    date: date || new Date().toLocaleDateString('en-CA'),
+                },
+            });
+
+            setSummary(summaryResponse.data.data);
             const response = await api.get('/attendance', {
                 params: {
                     search,
@@ -79,7 +93,7 @@ export default function Attendances() {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="p-8 space-y-6">
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-800">
@@ -96,6 +110,44 @@ export default function Attendances() {
                 >
                     + Add Attendance
                 </Link>
+            </div>
+            {/* Attendance Summary Cards */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {[
+                    {
+                        title: 'Total Present',
+                        count: summary.present,
+                        color: 'text-green-600',
+                    },
+                    {
+                        title: 'Total Late',
+                        count: summary.late,
+                        color: 'text-amber-600',
+                    },
+                    {
+                        title: 'Total Absent',
+                        count: summary.absent,
+                        color: 'text-red-600',
+                    },
+                    {
+                        title: 'On Leave',
+                        count: summary.on_leave,
+                        color: 'text-blue-600',
+                    },
+                ].map((item) => (
+                    <div
+                        key={item.title}
+                        className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+                    >
+                        <p className="text-sm font-medium text-gray-500">
+                            {item.title}
+                        </p>
+
+                        <h2 className={`mt-2 text-3xl font-bold ${item.color}`}>
+                            {item.count}
+                        </h2>
+                    </div>
+                ))}
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">

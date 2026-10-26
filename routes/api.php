@@ -33,6 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
         AttendanceController::class,
         'checkOut',
     ]);
+    Route::get('attendance/summary', [
+    AttendanceController::class,
+    'summary',
+]);
 });
 Route::apiResource('employees', EmployeeController::class);
 Route::apiResource('departments', DepartmentController::class);
