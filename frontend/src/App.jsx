@@ -17,6 +17,7 @@ import Attendances from './pages/Attendances';
 import AddAttendance from './pages/AddAttendance';
 import EditAttendance from './pages/EditAttendance';
 import Login from './pages/Login';
+import LeaveRequests from './pages/LeaveRequests';
 
 
 function App() {
@@ -55,6 +56,8 @@ function App() {
                                         <Route path="/attendance" element={<Attendances />} />
                                         <Route path="/attendance/create" element={<AddAttendance />} />
                                         <Route path="/attendance/:id/edit" element={<EditAttendance />} />
+
+                                        <Route path="/leave-requests" element={<LeaveRequests />} />
                                     </Routes>
                                 </main>
                             </div>

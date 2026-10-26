@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\LeaveRequestController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -34,9 +35,17 @@ Route::middleware('auth:sanctum')->group(function () {
         'checkOut',
     ]);
     Route::get('attendance/summary', [
-    AttendanceController::class,
-    'summary',
-]);
+        AttendanceController::class,
+        'summary',
+    ]);
+    Route::apiResource('leave-requests', LeaveRequestController::class)
+        ->parameters(['leave-requests' => 'leaveRequest'])
+        ->only(['index', 'store', 'show', 'destroy']);
+
+    Route::patch(
+        'leave-requests/{leaveRequest}/review',
+        [LeaveRequestController::class, 'review']
+    );
 });
 Route::apiResource('employees', EmployeeController::class);
 Route::apiResource('departments', DepartmentController::class);
